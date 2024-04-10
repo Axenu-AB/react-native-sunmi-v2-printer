@@ -260,6 +260,15 @@ interface IWoyouService
     */
     boolean isForcedAntiWhite();
 
+	/**
+	*  台式打印机可以切换打印纸类型，此接口可以获取当前打印机支持的打印纸型号
+	*  返回： 0: 80mm 1: 58mm
+	*  支持版本：T1-v2.4.0以上
+	*          T2、S2-v1.0.5以上
+	*          其他 v4.1.2以上
+	*/
+	int getPrinterPaper();
+
     /**
     * 是否强制启用加粗样式
     * 返回 true:启用 false：未启用
