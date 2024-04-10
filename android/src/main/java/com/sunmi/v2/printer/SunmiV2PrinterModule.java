@@ -283,6 +283,23 @@ public class SunmiV2PrinterModule extends ReactContextBaseJavaModule {
         return printerService.getPrinterVersion();
     }
 
+
+    @ReactMethod
+    public void getPrinterPaper(final Promise p) {
+        try {
+            final IWoyouService printerService = woyouService;
+            int result = printerService.getPrinterPaper();
+            p.resolve(result);
+        } catch (Exception e) {
+            p.reject("" + 0, e.getMessage());
+        }
+    }
+
+    private int getPrinterPaper() throws Exception {
+        final IWoyouService printerService = woyouService;
+        return printerService.getPrinterPaper();
+    }
+
     /**
      * 获取打印机型号
      */
@@ -511,6 +528,18 @@ public class SunmiV2PrinterModule extends ReactContextBaseJavaModule {
         });
     }
 
+    @ReactMethod
+    public void setAlignmentWithoutPromise(int alignment) {
+        final IWoyouService ss = woyouService;
+        final int align = alignment;
+         try {
+            ss.setAlignment(align, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.i(TAG, "ERROR: " + e.getMessage());
+        }
+    }
+
     /**
      * 设置打印字体, 对之后打印有影响，除非初始化
      * (目前只支持一种字体"gh"，gh是一种等宽中文字体，之后会提供更多字体选择)
@@ -609,6 +638,17 @@ public class SunmiV2PrinterModule extends ReactContextBaseJavaModule {
         });
     }
 
+    @ReactMethod
+    public void setFontSizeWithoutPromise(float fontsize) {
+        final IWoyouService ss = woyouService;
+        final float fs = fontsize;
+         try {
+            ss.setFontSize(fs, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.i(TAG, "ERROR: " + e.getMessage());
+        }
+    }
 
     /**
      * 打印指定字体的文本，字体设置只对本次有效
@@ -720,6 +760,29 @@ public class SunmiV2PrinterModule extends ReactContextBaseJavaModule {
                 }
             }
         });
+    }
+
+        @ReactMethod
+    public void printColumnsTextWithoutPromise(ReadableArray colsTextArr, ReadableArray colsWidthArr, ReadableArray colsAlign, final Promise p) {
+        final IWoyouService ss = woyouService;
+        final String[] clst = new String[colsTextArr.size()];
+        for (int i = 0; i < colsTextArr.size(); i++) {
+            clst[i] = colsTextArr.getString(i);
+        }
+        final int[] clsw = new int[colsWidthArr.size()];
+        for (int i = 0; i < colsWidthArr.size(); i++) {
+            clsw[i] = colsWidthArr.getInt(i);
+        }
+        final int[] clsa = new int[colsAlign.size()];
+        for (int i = 0; i < colsAlign.size(); i++) {
+            clsa[i] = colsAlign.getInt(i);
+        }
+        try {
+            ss.printColumnsText(clst, clsw, clsa,null );
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.i(TAG, "ERROR: " + e.getMessage());
+        }
     }
 
 
@@ -947,6 +1010,19 @@ public class SunmiV2PrinterModule extends ReactContextBaseJavaModule {
         });
     }
 
+     @ReactMethod
+    public void printOriginalTextWithoutPromise(String text) {
+        final IWoyouService ss = woyouService;
+        Log.i(TAG, "come: " + text + " ss:" + ss);
+        final String txt = text;
+        try {
+            ss.printOriginalText(txt, null);
+        }catch (Exception e) {
+            e.printStackTrace();
+            Log.i(TAG, "ERROR: " + e.getMessage());
+        }
+    }
+
     /**
      * 打印缓冲区内容
      */
@@ -990,6 +1066,19 @@ public class SunmiV2PrinterModule extends ReactContextBaseJavaModule {
         });
     }
 
+        @ReactMethod
+    public void enterPrinterBufferWithoutPromise(boolean clean) {
+        final IWoyouService ss = woyouService;
+        Log.i(TAG, "come: " + clean + " ss:" + ss);
+        final boolean c = clean;
+        try {
+            ss.enterPrinterBuffer(c);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.i(TAG, "ERROR: " + e.getMessage());
+        }
+    }
+
     /**
      * 退出缓冲模式
      *
@@ -1011,6 +1100,19 @@ public class SunmiV2PrinterModule extends ReactContextBaseJavaModule {
                 }
             }
         });
+    }
+
+    @ReactMethod
+    public void exitPrinterBufferWithoutPromise(boolean commit) {
+        final IWoyouService ss = woyouService;
+        Log.i(TAG, "come: " + commit + " ss:" + ss);
+        final boolean com = commit;
+        try {
+            ss.exitPrinterBuffer(com);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.i(TAG, "ERROR: " + e.getMessage());
+        }
     }
 
 
@@ -1113,4 +1215,6 @@ public class SunmiV2PrinterModule extends ReactContextBaseJavaModule {
             }
         });
     }
+    
 }
+
