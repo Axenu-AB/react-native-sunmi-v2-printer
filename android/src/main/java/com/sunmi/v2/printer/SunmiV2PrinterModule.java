@@ -1174,6 +1174,28 @@ public class SunmiV2PrinterModule extends ReactContextBaseJavaModule {
             }
         });
     }
+    
+    @ReactMethod
+    public void openDrawer() {
+        final IWoyouService ss = woyouService;
+        ThreadPoolManager.getInstance().executeTask(new Runnable() {
+            @Override
+            public void run() {
+                byte[] mOpenDrawerCommand = new byte[5];
+                mOpenDrawerCommand[0] = 0x10;
+                mOpenDrawerCommand[1] = 0x14;
+                mOpenDrawerCommand[2] = 0x00;
+                mOpenDrawerCommand[3] = 0x00;
+                mOpenDrawerCommand[4] = 0x00;
+                String mOpenDrawerCommandString = Base64.encodeToString(mOpenDrawerCommand, Base64.DEFAULT);
+                try {
+                    ss.sendRAWData(mOpenDrawerCommand, null);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
     @ReactMethod
     public void exitPrinterBufferWithCallback(final boolean commit, final Callback callback) {
